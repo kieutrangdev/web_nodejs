@@ -1,9 +1,16 @@
+const pagination = require("../../common/pagination");
 const ProductModel = require("../models/product");
 
 const index = async (req, res)=>{
     const page = parseInt(req.query.page) || 1;
     const limit = 10
     const skip = page * limit - limit
+    const totalRows = await ProductModel.find().countDocuments()
+    const totalPages = Math.ceil(totalRows / limit)
+    const next = page + 1;
+    const hasNext = page < totalPages ? true : false
+    const prev = page - 1;
+    const hasPrev = page > 1 ? true : false
     const products = await ProductModel
     .find({})
     .populate({path: "cat_id"})
@@ -12,7 +19,17 @@ const index = async (req, res)=>{
     .limit(limit)
     ;
 
-    res.render("admin/products/product", {data: {products: products}});
+    res.render("admin/products/product", 
+    {data: {products: products},
+     pages: pagination(page, totalPages), 
+     totalPages,
+      page, 
+      next, 
+      hasNext,
+      prev,
+      hasPrev
+    }
+    );
 }
 const create = (req, res)=>{
     
