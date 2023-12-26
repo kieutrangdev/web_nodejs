@@ -5,6 +5,7 @@ const login = (req, res)=>{
 }
 const postLogin = async (req, res)=>{
     let error;
+    let email =  req.body.email
     const users = await UserModel.find({email: req.body.email, password: req.body.password});
     if(req.body.email == ""){
         error = "Tài khoản không được để trống !"
@@ -13,6 +14,7 @@ const postLogin = async (req, res)=>{
         error = "Mật khẩu không được để trống !";
     }
     else if(users.length > 0){
+        req.session.email = email
         res.redirect("/admin/dashboard");
     }
     else{
@@ -22,7 +24,8 @@ const postLogin = async (req, res)=>{
 }
 
 const logout = (req, res)=>{
-    res.send("/admin/logout");
+    req.session.destroy()
+    res.redirect("/admin/login");
 }
 
 module.exports = {

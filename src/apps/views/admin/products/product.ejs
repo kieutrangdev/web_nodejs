@@ -20,7 +20,7 @@
                 </div>
                 <!--/.row-->
                 <div id="toolbar" class="btn-group">
-                    <a href="product-add.html" class="btn btn-success">
+                    <a href="/admin/products/create" class="btn btn-success">
                         <i class="glyphicon glyphicon-plus"></i> Thêm sản phẩm
                     </a>
                 </div>
@@ -45,7 +45,7 @@
                                         <% if(data && data.products){%>
                                         <% for(x in data.products){%>
                                         <tr>
-                                            <td style="">1</td>
+                                            <td style=""><%= x %></td>
                                             <td style=""><%= data.products[x].name%></td>
                                             <td style=""><%= data.products[x].price%> vnd</td>
                                             <td style="text-align: center"><img width="130" height="180"

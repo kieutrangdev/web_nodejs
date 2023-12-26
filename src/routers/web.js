@@ -8,6 +8,9 @@ const UserController = require("../apps/controllers/user");
 const CategoryController = require("../apps/controllers/category");
 const ProductController = require("../apps/controllers/product");
 const TestController = require("../apps/controllers/test");
+
+const AuthMiddleware = require("../apps/middlewares/authMiddleware")
+const UploadMiddleware = require("../apps/middlewares/upload")
 const { route } = require("../apps/app");
 
 // Router Backend
@@ -18,11 +21,11 @@ router.get("/test", TestController.test);
 router.post("/test1", TestController.test1);
 router.get("/", HomeController);
 // Auth
-router.get("/admin/login", AuthController.login);
-router.post("/admin/login", AuthController.postLogin);
-router.get("/admin/logout", AuthController.logout);
+router.get("/admin/login", AuthMiddleware.checkLogin ,AuthController.login);
+router.post("/admin/login", AuthMiddleware.checkLogin,AuthController.postLogin);
+router.get("/admin/logout",AuthMiddleware.checkAdmin, AuthController.logout);
 // Admin
-router.get("/admin/dashboard", AdminController.index);
+router.get("/admin/dashboard", AuthMiddleware.checkAdmin, AdminController.index);
 // User
 router.get("/admin/users", UserController.index);
 router.get("/admin/users/create", UserController.create);
@@ -34,10 +37,13 @@ router.get("/admin/categories/create", CategoryController.create);
 router.get("/admin/categories/edit/:id", CategoryController.edit);
 router.get("/admin/categories/delete/:id", CategoryController.del);
 // Product
-router.get("/admin/products", ProductController.index);
-router.get("/admin/products/create", ProductController.create);
-router.get("/admin/products/edit/:id", ProductController.edit);
-router.get("/admin/products/delete/:id", ProductController.del);
+router.get("/admin/products", AuthMiddleware.checkAdmin,ProductController.index);
+router.get("/admin/products/create",AuthMiddleware.checkAdmin, ProductController.create);
+router.post("/admin/products/store",
+    UploadMiddleware.single("thumbnail"),
+    AuthMiddleware.checkAdmin, ProductController.store);
+router.get("/admin/products/edit/:id", AuthMiddleware.checkAdmin,ProductController.edit);
+router.get("/admin/products/delete/:id", AuthMiddleware.checkAdmin,ProductController.del);
 
 
 // Router Frontend
