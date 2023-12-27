@@ -47,7 +47,7 @@
                                         <tr>
                                             <td style=""><%= x %></td>
                                             <td style=""><%= data.products[x].name%></td>
-                                            <td style=""><%= data.products[x].price%> vnd</td>
+                                            <td style=""><%= data.products[x].price%>vnd</td>
                                             <td style="text-align: center"><img width="130" height="180"
                                                     src="images/<%= data.products[x].thumbnail%>" /></td>
                                             <% if(data.products[x].is_stock){%>
@@ -60,9 +60,9 @@
                                             <% }%>
                                             <td><%= data.products[x].cat_id.title%></td>
                                             <td class="form-group">
-                                                <a href="product-edit.html" class="btn btn-primary"><i
+                                                <a href="/admin/products/edit/<%= data.products[x]._id%>" class="btn btn-primary"><i
                                                         class="glyphicon glyphicon-pencil"></i></a>
-                                                <a href="product-edit.html" class="btn btn-danger"><i
+                                                <a href="/admin/products/delete/<%= data.products[x]._id%>" class="btn btn-danger"><i
                                                         class="glyphicon glyphicon-remove"></i></a>
                                             </td>
                                         </tr>
