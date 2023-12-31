@@ -10,6 +10,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use("/static", express.static(config.app.static_folder));
+app.use(require("./middlewares/share"))
+
+
 app.set("views", config.app.views_folder);
 app.set("view engine", config.app.view_engine);
 app.set('trust proxy', 1) // trust first proxy

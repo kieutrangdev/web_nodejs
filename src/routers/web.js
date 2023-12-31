@@ -8,18 +8,16 @@ const UserController = require("../apps/controllers/user");
 const CategoryController = require("../apps/controllers/category");
 const ProductController = require("../apps/controllers/product");
 const TestController = require("../apps/controllers/test");
+const SiteController = require("../apps/controllers/site")
 
 const AuthMiddleware = require("../apps/middlewares/authMiddleware")
 const UploadMiddleware = require("../apps/middlewares/upload")
 const { route } = require("../apps/app");
 
 // Router Backend
-const HomeController = (req, res)=>{
-    res.send("<h1>Welcome NodeJS !</h1>");
-}
+
 router.get("/test", TestController.test);
 router.post("/test1", TestController.test1);
-router.get("/", HomeController);
 // Auth
 router.get("/admin/login", AuthMiddleware.checkLogin ,AuthController.login);
 router.post("/admin/login", AuthMiddleware.checkLogin,AuthController.postLogin);
@@ -51,6 +49,12 @@ router.get("/admin/products/delete/:id", AuthMiddleware.checkAdmin,ProductContro
 
 
 // Router Frontend
-
+// Router Site
+router.get("/", SiteController.home);
+router.get("/category", SiteController.category);
+router.get("/product", SiteController.product);
+router.get("/search", SiteController.search);
+router.get("/cart", SiteController.cart);
+router.get("/success", SiteController.success);
 
 module.exports = router;
