@@ -42,8 +42,15 @@ const comment = async(req, res)=>{
     res.redirect(req.path)
 }
 
-const search = (req, res)=>{
-    res.render("site/search");
+const search = async(req, res)=>{
+    const keyword = req.query.keyword  || ""
+    const products = await ProductModel.find({
+        $text: {
+            $search: keyword
+        }
+    })
+    console.log("check",products)
+    res.render("site/search", {products, keyword});
 }
 const cart = (req, res)=>{
     res.render("site/cart");
