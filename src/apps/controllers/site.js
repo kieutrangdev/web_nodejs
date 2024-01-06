@@ -1,4 +1,6 @@
+const CategoryModel = require("../models/category")
 const ProductModel = require("../models/product")
+const CommentModel = require("../models/comment")
 const home = async(req, res)=>{
     const featured = await ProductModel.find({
         featured: true,
@@ -13,12 +15,33 @@ const home = async(req, res)=>{
         .limit(6)
     res.render("site/index", {featured, lastest});
 }
-const category = (req, res)=>{
-    res.render("site/category");
+const category = async(req, res)=>{
+    const id = req.params.id
+    const category = await CategoryModel.findById(id)
+    const products = await ProductModel.find({cat_id: id})
+    const total = products.length;
+    // console.log(products)
+    res.render("site/category", {category, products, total});
 }
-const product = (req, res)=>{
-    res.render("site/product");
+const product = async(req, res)=>{
+    const id = req.params.id
+    const product = await ProductModel.findById(id)
+    const comments = await CommentModel.find({prd_id: id})
+    res.render("site/product", {product, comments});
 }
+const comment = async(req, res)=>{
+    const prd_id = req.params.id
+    const {full_name, email, body} = req.body
+    const comment = {
+        prd_id,
+        full_name,
+        email,
+        body
+    }
+    await CommentModel(comment).save()
+    res.redirect(req.path)
+}
+
 const search = (req, res)=>{
     res.render("site/search");
 }
@@ -36,4 +59,5 @@ module.exports = {
     search,
     cart,
     success,
+    comment
 }
